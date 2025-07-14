@@ -1,0 +1,43 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-lock.yaml
+
+# Output
+dist/
+build/
+.next/
+.next/cache/
+
+# Prisma
+prisma/dev.db
+prisma/dev.db-journal
+*.sqlite
+*.sqlite-journal
+.env
+.env.*.local
+.env.local
+
+# Logs
+logs
+*.log
+*.out
+*.tsbuildinfo
+
+# Coverage
+coverage/
+*.lcov
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Optional: if using TurboRepo or monorepo
+turbo/
+.cache/
