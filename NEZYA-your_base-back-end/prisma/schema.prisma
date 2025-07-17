@@ -8,11 +8,12 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   email     String   @unique
   password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  name      String?
+  createdAt DateTime @default(now()) @map("create_at")
+  updatedAt DateTime @updatedAt @map("update_at")
 
   topics   Topic[]
   notes    Note[]
@@ -23,14 +24,14 @@ model User {
 }
 
 model Topic {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(cuid())
   title       String
   description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now()) @map("create_at")
+  updatedAt   DateTime @updatedAt @map("update_at")
 
-  user   User @relation(fields: [userId], references: [id])
-  userId Int
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @map("user_id")
 
   checklist ChecklistItem[]
   notes     Note[]
@@ -44,24 +45,24 @@ model ChecklistItem {
   done  Boolean @default(false)
   order Int?
 
-  topic   Topic @relation(fields: [topicId], references: [id])
-  topicId Int
+  topic   Topic  @relation(fields: [topicId], references: [id])
+  topicId String @map("topic_id")
 
   @@map("checklist_items")
 }
 
 model Note {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   title     String
   content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("create_at")
+  updatedAt DateTime @updatedAt @map("update_at")
 
-  user   User @relation(fields: [userId], references: [id])
-  userId Int
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @map("user_id")
 
-  topic   Topic? @relation(fields: [topicId], references: [id])
-  topicId Int?
+  topic   Topic?  @relation(fields: [topicId], references: [id])
+  topicId String? @map("topic_id")
 
   tags NoteTag[]
 
@@ -69,12 +70,12 @@ model Note {
 }
 
 model Tag {
-  id    Int     @id @default(autoincrement())
+  id    String  @id @default(cuid())
   name  String
   color String?
 
-  user   User @relation(fields: [userId], references: [id])
-  userId Int
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @map("user_id")
 
   notes NoteTag[]
 
@@ -82,8 +83,8 @@ model Tag {
 }
 
 model NoteTag {
-  noteId Int
-  tagId  Int
+  noteId String @map("note_id")
+  tagId  String @map("tag_id")
 
   note Note @relation(fields: [noteId], references: [id])
   tag  Tag  @relation(fields: [tagId], references: [id])
@@ -93,13 +94,13 @@ model NoteTag {
 }
 
 model UserSetting {
-  id     Int  @id @default(autoincrement())
-  user   User @relation(fields: [userId], references: [id])
-  userId Int  @unique
+  id     Int    @id @default(autoincrement())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique @map("user_id")
 
-  darkMode       Boolean @default(false)
+  darkMode       Boolean @default(false) @map("dark_mode")
   language       String  @default("ru")
-  showDeadTopics Boolean @default(true)
+  showDeadTopics Boolean @default(true) @map("show_dead_topics")
 
   @@map("user_settings")
 }
